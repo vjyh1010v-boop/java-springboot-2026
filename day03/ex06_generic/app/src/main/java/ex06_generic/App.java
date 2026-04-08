@@ -3,21 +3,19 @@
  */
 package ex06_generic;
 
-import javax.swing.Box;
-
 public class App {
     public static void main(String[] args) {
-        System.out.println("Generic 학습");    
+        System.out.println("Generic 학습");
     
         // Box box = new Box();
         // box.set("문자열");  // Object <- 문자열 할당
-        // box.set("1000");
+        // box.set(1000);
         // // box.set(true);
 
-        // String s = (String) box.get(); // 형변환 필요 - 그냥쓰면 안되고, 형변환 해줘야함. 이처럼.
-        // System.out.prinln(s);
-        Box<String> box = new Box<>();
-        box.set(10000);
+        // String s = (String) box.get(); // 형변환 필요
+        // System.out.println(s);
+        // Box<String> box = new Box<>();
+        // box.set("10000");
         
         Box<Integer> box_n = new Box<>();
         box_n.set(10000);
@@ -40,13 +38,13 @@ public class App {
     }
 }
 
-// 두 타입을 받는데 어떤타입이든 받을 수 있다.
-class Pair<K, V> {
-    K key;
-    V value;
-}
+    // 두 타입을 받는데 어떤타입이든 받을 수 있다.
+    class Pair<K, V> {
+        K key;
+        V value;
+    }
 
-calss Box<T> {  // T -> 아무 타입이나 상관없음
+    class Box<T> {  // T -> 아무 타입이나 상관없음
     T value;  // 멤버 필드. 무슨타입이든지 받을 수 있음.
 
     // setter
@@ -57,5 +55,4 @@ calss Box<T> {  // T -> 아무 타입이나 상관없음
     T get() {
         return this.value;
     }
-
 }

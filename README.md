@@ -2,6 +2,8 @@
 
 2026년 java개발자과정 SpringBoot 리포지토리
 
+- 기본자바 학습
+
 ## 1일차
 
 ### 개발환경 설정
@@ -351,7 +353,7 @@ students.add(new Student("철수", 35, 100));
   class Student {
   Stirng name;
   int age;
-  ..};
+  ..;
   ```
 
 - 메서드(Method)
@@ -878,10 +880,9 @@ class Dog extends Animal {
         String s = (String) box.get(); // 형변환 필요 - 그냥쓰면 안되고, 형변환 해줘야함. 이처럼.
         System.out.prinln(s)
   }
-  ...
 
   calss Box {
-  Object value; // 멤버 필드. 무슨타입이든지 받을 수 있음.
+      Object value; // 멤버 필드. 무슨타입이든지 받을 수 있음.
 
       // setter
       void set(Object value) {
@@ -892,41 +893,37 @@ class Dog extends Animal {
           return this.value;
       }
   }
-
   ```
 
 - Exception in thread "main" java.lang.ClassCastCastException 형변환 예외발생
 - 매번 형변환
 
-- Generic(일반화) 방식
+- Generic(일반화) 방식 - [소스](./day03/ex06_generic/app/src/main/java/ex06_generic/App.java)
 
   ```java
   calss Box<T> {  // T -> 아무 타입이나 상관없음
   T value;  // 멤버 필드. 무슨타입이든지 받을 수 있음.
 
-  // setter
-  void set(T value) {
-      this.value = value;
-  }
-  // getter
-  Object get() {
+    // setter
+    void set(T value) {
+        this.value = value;
+    }
+    // getter
+    Object get() {
       return this.value;
+    }
+    }
+
+    // 두 타입을 받는데 어떤타입이든 받을 수 있다.
+    class Pair<K, V> {
+      K key;
+      V value;
   }
   ...
   // 사용시
-     Box<String> box = new Box<String>();
-     Box<String> box = new Box<>(); // 둘 다 가능
-
-  ...
-  Box<String> box = new Box<>();
-    box.set(10000);
-
-    Box<Integer> box_n = new Box<>();
-    box_n.set(10000);
-
-    System.out.println(box_n.get());
-
-    Box<Number> box3 = new Box<>();
+    Box<String> box = new Box<String>();
+    Box<String> box = new Box<>();  // 둘 다 가능
+    Box<Number> box3 = new Box<>(); // Number 타입 : 숫자 종류는 모두 받을 수있는 클래스 타입
     box3.set(1000);
     box3.set(3.14f);
     box3.set(300000L);
@@ -939,7 +936,6 @@ class Dog extends Animal {
 
     p2.key = 9090;
     p2.value = 4.267f;
-    }
   ```
 
   - T : 모든 타입을 의미
