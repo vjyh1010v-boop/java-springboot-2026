@@ -133,7 +133,7 @@ OpenJDK 64-Bit Server VM Microsoft-13106404 (build 21.0.10+7-LTS, mixed mode, sh
 
 - 프로젝트 빌드, 자바 의존성(라이브러리) 관리, 문서화, 프로젝트 전체 관리
   - Maven : 오래된 빌드도구. xml 기반. pom.xml
-  - `Granle` : Maven 단점을 잡아낸 빌드도구. 텍스트 문서기반. build.gradle 로 관리
+  - `Gradle` : Maven 단점을 잡아낸 빌드도구. 텍스트 문서기반. build.gradle 로 관리
 
   ![alt text](image-12.png)
 
