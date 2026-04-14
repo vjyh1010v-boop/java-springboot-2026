@@ -704,16 +704,17 @@ implementation 'org.springframework.boot:spring-boot-starter-validation'
   - @AllArgsConstructor : 클래스 모든 멤버변수를 파라미터로 생성자 생성
   - @NoArgsContructor : 기본 생성자를 자동으로 생성
 
-- DB 모델용
+- DB 모델용 - [소스](./day07/webboard/src/main/java/com/pknu26/webboard/entity/Board.java)
   - @OneToMany : DB모델링 1대 다 ERD 관계를 entity내 클래스에서 설정.
+  - @ManyToOne : N:1 ERD 관계를 설정
 
-#### Board 수정
+#### Board 작업 (수정)
 
 - 게시글 수정
-  - board_create.html을 create와 modify 모드로 분리
-  - board_detail.html에 수정 버튼 추가
-  - BoardController에 /modify{bno} GetMapping, PostMapping 작업
-  - BoardService에 putBoardOne 메서드 작업
+  - board_create.html을 create와 modify 모드로 분리 - [소스](./day07/webboard/src/main/resources/templates/board_create.html)
+  - board_detail.html에 수정 버튼 추가 - [소스](./day07/webboard/src/main/resources/templates/board_detail.html)
+  - BoardController에 /modify{bno} GetMapping, PostMapping 작업 - [소스](./day07/webboard/src/main/)
+  - BoardService에 putBoardOne 메서드 작업 - [소스]()
 
 - 게시글 삭제
   - board_detail.html을 삭제 버튼 추가
@@ -738,7 +739,7 @@ implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 #### H2 DB에서 Oracle로 전환
 
-- application.properties에 H2관련설정을 Oracle로 변경
+- application.properties에 H2관련설정을 Oracle로 변경 - [소스]()
 - 시퀀스 문제(increase 50) 해결
 - Board content 길이 문제 해결
   - Oracle에서는 VARCHAR2(4000) 이상 사용못함. 4000자 이상 불가능
@@ -808,6 +809,9 @@ COMMIT;
 
 - Oracle 설정
 - MyBatis
+  ```properties
+  implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:4.0.1'
+  ```
 
 #### MyBatis
 
@@ -815,3 +819,29 @@ COMMIT;
 - DB 쿼리를 xml로 Java 코드와 분리, 유지보수와 생산성을 높이는 기능
 - JPA : ORM 프레임워크와 달리 직접 쿼리를 작성
 - JPA가진 복잡한 쿼리 문제를 MyBatis로 해결
+
+#### 폴더 지정
+
+- controller : 컨트롤러
+- service : 서비스
+- mapper : SQL이 작성된 XML과 연결시켜주는 클래스
+- dto : Data Transfer Object. JPA에 entity와 유사한 기능 클래스. 테이블 생성 X
+- resources/mapper : Java mapper 클래스와 연결되는 XML 파일 저장위치 // 아래 사진 참고. 둘이는 세트가 되어야 함.
+
+  ![alt text](image-26.png)
+
+#### 클래스/인터페이스 생성
+
+- dto/Student.java 생성 - [소스](./day08/studygroup/src/main/java/com/pknu26/studygroup/dto/Student.java)
+- mapper/StudentMapper.java 인터페이스 생성
+- reseources/mapper/StudentMapper.xml 생성, 쿼리문 작성. 빌드 후 class 변경
+- service/StudentService.java 생성
+- controller/StudentController 클래스 생성. RestAPI용 RestController
+
+#### Swagger UI GET/POST 테스트 수행
+
+![alt text](image-27.png)
+
+- 브라우저 -> Controller -> Service -> Mapper -> DB
+
+#### 게시판 테이블 생성 (작업)
