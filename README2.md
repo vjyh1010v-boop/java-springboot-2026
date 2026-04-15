@@ -693,7 +693,7 @@ implementation 'org.springframework.boot:spring-boot-starter-validation'
 5. BoardService.java 추가 - [소스](./day06/webboard/src/main/java/com/pknu26/webboard/service/BoardService.java)
 6. BoardController.java 메서드 추가 - [소스](./day06/webboard/src/main/java/com/pknu26/webboard/controller/BoardController.java)
 
-## 7일차
+## 7일차, 8일차
 
 ### Spring Boot webboard 계속
 
@@ -714,7 +714,7 @@ implementation 'org.springframework.boot:spring-boot-starter-validation'
   - board_create.html을 create와 modify 모드로 분리 - [소스](./day07/webboard/src/main/resources/templates/board_create.html)
   - board_detail.html에 수정 버튼 추가 - [소스](./day07/webboard/src/main/resources/templates/board_detail.html)
   - BoardController에 /modify{bno} GetMapping, PostMapping 작업 - [소스](./day07/webboard/src/main/)
-  - BoardService에 putBoardOne 메서드 작업 - [소스]()
+  - BoardService에 putBoardOne 메서드 작업 - [소스](./day07/webboard/src/main/java/com/pknu26/webboard/service/BoardService.java)
 
 - 게시글 삭제
   - board_detail.html을 삭제 버튼 추가
@@ -739,7 +739,7 @@ implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 #### H2 DB에서 Oracle로 전환
 
-- application.properties에 H2관련설정을 Oracle로 변경 - [소스]()
+- application.properties에 H2관련설정을 Oracle로 변경 - [소스](./day07/webboard/src/main/resources/application.properties)
 - 시퀀스 문제(increase 50) 해결
 - Board content 길이 문제 해결
   - Oracle에서는 VARCHAR2(4000) 이상 사용못함. 4000자 이상 불가능
@@ -760,8 +760,8 @@ implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 #### 프로젝트 생성
 
-- Spring Initiolizr: Create a Gradle Project
-- Artifact ID : studygroup
+- Spring Initiolizr: Create a Gradle Project...
+- Artifact ID : `studygroup`
 - Choose dependencies
   - Spring Boot DevTools
   - Lombok
@@ -782,6 +782,8 @@ GRANT ALL PRIVILEGES TO studygroup;
 ```
 
 #### 테이블 생성
+
+- [소스](./day08/studygroup/sql/student_schema.sql)
 
 ```sql
 -- student 테이블
@@ -809,6 +811,7 @@ COMMIT;
 
 - Oracle 설정
 - MyBatis
+
   ```properties
   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:4.0.1'
   ```
@@ -835,13 +838,208 @@ COMMIT;
 - dto/Student.java 생성 - [소스](./day08/studygroup/src/main/java/com/pknu26/studygroup/dto/Student.java)
 - mapper/StudentMapper.java 인터페이스 생성
 - reseources/mapper/StudentMapper.xml 생성, 쿼리문 작성. 빌드 후 class 변경
-- service/StudentService.java 생성
+- service/StudentService.java 클래스 생성
 - controller/StudentController 클래스 생성. RestAPI용 RestController
 
-#### Swagger UI GET/POST 테스트 수행
+#### Swagger UI GET/POT 테스트 수행
 
-![alt text](image-27.png)
+![alt text](image-28.png)
 
 - 브라우저 -> Controller -> Service -> Mapper -> DB
 
-#### 게시판 테이블 생성 (작업)
+#### 게시판 테이블 생성
+
+- [소스](./day08/studygroup/sql/board_schema.sql)
+
+```sql
+-- 게시판
+CREATE TABLE BOARD (
+    BOARD_ID        NUMBER          PRIMARY KEY,
+    TITLE           VARCHAR2(200)   NOT NULL,
+    CONTENT         CLOB            NOT NULL,
+    WRITER          VARCHAR2(100)   NOT NULL,
+    CREATED_AT      DATE            DEFAULT SYSDATE NOT NULL,
+    UPDATED_AT      DATE
+);
+
+-- 게시판 시퀀스
+CREATE SEQUENCE BOARD_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+```
+
+#### Thymeleaf form Validation 의존성 추가
+
+```groovy
+implementation 'org.springframework.boot:spring-boot-starter-validation'
+```
+
+#### Validation 폴더 생성
+
+- 폼 입력검증 폴더 필요
+
+#### 클래스/인터페이스 생성
+
+- dto/Board 클래스 - [소스](./day08/studygroup/src/main/java/com/pknu26/studygroup/dto/Board.java)
+- validation/BoardForm 클래스 - [소스](./day08/studygroup/src/main/java/com/pknu26/studygroup/validation/BoardForm.java)
+- mapper/BoardMapper 인터페이스
+- resources/mapper/BoardMapper.xml 쿼리
+- service/BoardService 인터페이스
+- service/BoardServiceImpl 클래스
+- controller/BoardController 클래스
+
+#### HTML 생성
+
+- resources/templates/layout.html - [소스](./day08/studygroup/src/main/resources/templates/layout.html)
+- resources/templates/board/list.html
+- resources/templates/board/detail.html
+- resources/templates/board/form.html
+
+#### 중간실행결과
+
+![alt text](image-28.png)
+
+## 9일차
+
+### MyBatis StudyGroup 계속
+
+스터디 모집 웹사이트
+
+#### 글 수정
+
+- controller/BoardController.java 에 수정처리 추가
+
+#### 삭제 메시지창 띄우기
+
+- /templates/board/detail.html 삭제 버튼 수정
+  - 부트스트랩 기능 추가
+  - 자바스크립트 코드 추가
+
+  ![alt text](image-29.png)
+
+#### 댓글 테이블 생성 (작업)
+
+- 게시글 1 : 댓글 N
+
+```sql
+CREATE TABLE REPLY (
+    REPLY_ID         NUMBER          PRIMARY KEY,
+    BOARD_ID         NUMBER          NOT NULL,
+    REPLY_CONTENT    VARCHAR2(1000)  NOT NULL,
+    REPLY_WRITER     VARCHAR2(100)   NOT NULL,
+    CREATED_AT       DATE DEFAULT SYSDATE NOT NULL,
+    CONSTRAINT FK_REPLY_BOARD
+        FOREIGN KEY (BOARD_ID)
+        REFERENCES BOARD (BOARD_ID)
+);
+
+CREATE SEQUENCE REPLY_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+```
+
+#### 댓글관련 파일 생성
+
+- controller/ReplyController 클래스
+- dto/Reply 클래스
+- mapper/ReplyMapper 인터페이스
+- service/ReplyService 인터페이스
+- service/ReplyServiceImpl 클래스
+- validation/ReplyForm 클래스
+- resources/mapper/ReplyMapper.xml 파일
+
+#### 페이징 개요
+
+- 게시판 글이 한 화면에 일정단위(보통 10개)로 출력
+- 다음페이지로 넘어가는 페이징 숫자영역 따로 표시
+- 한페이지에 수십만개의 데이터를 한번에 출력 못함
+
+```sql
+-- 오라클에 한함
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
+```
+
+#### 신규추가
+
+- dto/PageRequest 클래스 생성
+- dto/PageResponse 클래스 생성
+
+#### 기존파일 수정
+
+- mapper/BoardMapper 인터페이스, findAll 메서드 수정, getTotalCount 메서드
+- mapper/BoardMapper.xml 위 메서드 관련 쿼리 수정, 작성
+- service/BoardService 인터페이스 readBoardList 메서드 수정
+- service/BoardServiceImpl 클래스 readBoardList 메서드 수정
+- controller/BoardController 클래스 list 메서드 수정
+- templates/board/list.html 수정
+
+![alt text](image-31.png)
+
+#### 게시글 옆 댓글 수 표시
+
+- dto/Board 클래스에 멤버변수 추가
+- mapper/BoardMapper.xml 서브쿼리 추가
+
+![alt text](image-30.png)
+
+#### 회원가입/로그인 개요
+
+- 직접개발 vs Spring Security 의존성 추가
+- Spring Security + JWT : API 방식 개발
+- 세션 : 접속 후 사용시간. 사용자의 상태정보 유지하는 방법
+- HttpSession 사용
+- 회원 비번, 민감한 개인정보는 암호화
+
+#### 회원 테이블 생성
+
+```sql
+-- 회원테이블
+CREATE TABLE USER_ACCOUNT (
+    USER_ID      NUMBER         PRIMARY KEY,
+    LOGIN_ID     VARCHAR2(50)   NOT NULL UNIQUE,
+    PASSWORD     VARCHAR2(255)  NOT NULL,
+    NAME         VARCHAR2(100)  NOT NULL,
+    ROLE         VARCHAR2(30)   DEFAULT 'ROLE_USER' NOT NULL,
+    CREATED_AT   DATE           DEFAULT SYSDATE NOT NULL,
+    UPDATED_AT   DATE
+);
+
+-- 회원용 시퀀스
+CREATE SEQUENCE USER_ACCOUNT_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+```
+
+#### 의존성 추가
+
+- build.gradle 에 암호화관련 의존성 추가
+
+#### 관련 파일 변경 / 추가
+
+- config/PasswordConfig 클래스 생성
+- dto/User 클래스 생성
+- mapper/UserMapper 인터페이스 생성
+- mapper/UserMapper.xml 생성
+- service/UserService 인터페이스 생성
+- service/UserServiceImpl 클래스 생성
+- dto/LoginUser 클래스 생성 - 브라우저에 보관되는 세션에 필요정보만 생성
+- controller/UserController 클래스 생성
+- templates/login/join.html 페이지 생성
+
+## 10일차
+
+## MyBatis StudyGroup 계속
+
+#### 회원가입/로그인 계속
+
+#### 스터디모집 웹사이트
+
+#### 게시판 내용 웹에디터 추가
+
+#### 조회수 증가
