@@ -1,0 +1,167 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <h3 th:text="${movieForm.movieId} == null ? '영화 등록' : '영화 수정'"></h3>
+
+    <form
+      th:action="${movieForm.movieId} == null ? @{/movie/create} : @{|/movie/edit/${movieForm.movieId}|}"
+      th:object="${movieForm}"
+      method="post"
+      class="mt-3"
+    >
+      <!-- 제목 -->
+      <div class="mb-3">
+        <label for="title" class="form-label"
+          >제목 <span class="text-danger">*</span></label
+        >
+        <input
+          type="text"
+          id="title"
+          th:field="*{title}"
+          class="form-control"
+          placeholder="영화 제목을 입력하세요"
+        />
+        <div
+          class="alert alert-danger mt-1"
+          th:if="${#fields.hasErrors('title')}"
+          th:errors="*{title}"
+        ></div>
+      </div>
+
+      <!-- 원제 -->
+      <div class="mb-3">
+        <label for="originalTitle" class="form-label">원제</label>
+        <input
+          type="text"
+          id="originalTitle"
+          th:field="*{originalTitle}"
+          class="form-control"
+          placeholder="원제를 입력하세요"
+        />
+      </div>
+
+      <!-- 감독 -->
+      <div class="mb-3">
+        <label for="director" class="form-label">감독</label>
+        <input
+          type="text"
+          id="director"
+          th:field="*{director}"
+          class="form-control"
+          placeholder="감독 이름을 입력하세요"
+        />
+      </div>
+
+      <!-- 배우 -->
+      <div class="mb-3">
+        <label for="actors" class="form-label">주요 배우</label>
+        <input
+          type="text"
+          id="actors"
+          th:field="*{actors}"
+          class="form-control"
+          placeholder="배우 이름을 콤마(,)로 구분하여 입력하세요"
+        />
+      </div>
+
+      <!-- 장르 -->
+      <div class="mb-3">
+        <label for="genre" class="form-label">장르</label>
+        <select id="genre" th:field="*{genre}" class="form-select">
+          <option value="">-- 장르 선택 --</option>
+          <option value="Action">Action</option>
+          <option value="Drama">Drama</option>
+          <option value="Sci-Fi">Sci-Fi</option>
+          <option value="Romance">Romance</option>
+          <option value="Comedy">Comedy</option>
+          <option value="Horror">Horror</option>
+          <option value="Thriller">Thriller</option>
+        </select>
+      </div>
+
+      <!-- 개봉일 -->
+      <div class="mb-3">
+        <label for="releaseDate" class="form-label"
+          >개봉일 <span class="text-danger">*</span></label
+        >
+        <input
+          type="date"
+          id="releaseDate"
+          th:field="*{releaseDate}"
+          class="form-control"
+        />
+        <div
+          class="alert alert-danger mt-1"
+          th:if="${#fields.hasErrors('releaseDate')}"
+          th:errors="*{releaseDate}"
+        ></div>
+      </div>
+
+      <!-- 상영시간 -->
+      <div class="mb-3">
+        <label for="runningTime" class="form-label"
+          >상영시간 (분) <span class="text-danger">*</span></label
+        >
+        <input
+          type="number"
+          id="runningTime"
+          th:field="*{runningTime}"
+          class="form-control"
+          placeholder="상영시간을 분 단위로 입력하세요"
+        />
+        <div
+          class="alert alert-danger mt-1"
+          th:if="${#fields.hasErrors('runningTime')}"
+          th:errors="*{runningTime}"
+        ></div>
+      </div>
+
+      <!-- 평점 -->
+      <div class="mb-3">
+        <label for="rating" class="form-label">평점 (0.0 ~ 10.0)</label>
+        <input
+          type="number"
+          id="rating"
+          th:field="*{rating}"
+          class="form-control"
+          step="0.1"
+          min="0.0"
+          max="10.0"
+          placeholder="평점을 입력하세요"
+        />
+        <div
+          class="alert alert-danger mt-1"
+          th:if="${#fields.hasErrors('rating')}"
+          th:errors="*{rating}"
+        ></div>
+      </div>
+
+      <!-- 설명 -->
+      <div class="mb-3">
+        <label for="description" class="form-label">영화 설명</label>
+        <textarea
+          id="description"
+          th:field="*{description}"
+          class="form-control"
+          rows="4"
+          placeholder="영화 설명을 입력하세요"
+        ></textarea>
+      </div>
+
+      <!-- 버튼 -->
+      <div class="text-end">
+        <a th:href="@{/movie/list}" class="btn btn-secondary">
+          <i class="bi bi-x-circle"></i> 취소
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-floppy"></i>
+          <span th:text="${movieForm.movieId} == null ? '등록' : '수정'"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</html>

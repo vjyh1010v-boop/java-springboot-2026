@@ -1,0 +1,48 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3><i class="bi bi-camera-reels"></i> 영화 감상 목록</h3>
+      <a th:href="@{/movie/create}" class="btn btn-sm btn-success">
+        <i class="bi bi-pencil"></i> 영화 등록
+      </a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th style="width: 5%">번호</th>
+          <th style="width: 25%">제목</th>
+          <th style="width: 15%">감독</th>
+          <th style="width: 10%">장르</th>
+          <th style="width: 10%">개봉일</th>
+          <th style="width: 8%">상영시간</th>
+          <th style="width: 7%">평점</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:if="${#lists.isEmpty(movieList)}">
+          <td colspan="7" class="text-center">등록된 영화가 없습니다.</td>
+        </tr>
+        <tr th:each="movie, index : ${movieList}">
+          <td th:text="${movie.movieId}"></td>
+          <td>
+            <a
+              th:href="@{|/movie/detail/${movie.movieId}|}"
+              th:text="${movie.title}"
+            ></a>
+          </td>
+          <td th:text="${movie.director}"></td>
+          <td th:text="${movie.genre}"></td>
+          <td th:text="${movie.releaseDate}"></td>
+          <td th:text="${movie.runningTime} + '분'"></td>
+          <td th:text="${movie.rating}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</html>

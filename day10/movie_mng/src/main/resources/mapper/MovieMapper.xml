@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.movie_mng.mapper.MovieMapper">
+
+    <!-- 목록 조회 -->
+    <select id="findAll" resultType="com.pknu26.movie_mng.dto.Movie">
+        SELECT
+            MOVIE_ID,
+            TITLE,
+            ORIGINAL_TITLE,
+            DIRECTOR,
+            ACTORS,
+            GENRE,
+            RELEASE_DATE,
+            RUNNING_TIME,
+            RATING,
+            DESCRIPTION,
+            CREATED_AT,
+            UPDATED_AT
+        FROM MOVIE
+        ORDER BY MOVIE_ID DESC
+    </select>
+
+    <!-- 상세 조회 -->
+    <select id="findById" parameterType="Long" resultType="com.pknu26.movie_mng.dto.Movie">
+        SELECT
+            MOVIE_ID,
+            TITLE,
+            ORIGINAL_TITLE,
+            DIRECTOR,
+            ACTORS,
+            GENRE,
+            RELEASE_DATE,
+            RUNNING_TIME,
+            RATING,
+            DESCRIPTION,
+            CREATED_AT,
+            UPDATED_AT
+        FROM MOVIE
+        WHERE MOVIE_ID = #{movieId}
+    </select>
+
+    <!-- 등록 -->
+    <insert id="insert" parameterType="com.pknu26.movie_mng.dto.Movie">
+        INSERT INTO MOVIE (
+            MOVIE_ID,
+            TITLE,
+            ORIGINAL_TITLE,
+            DIRECTOR,
+            ACTORS,
+            GENRE,
+            RELEASE_DATE,
+            RUNNING_TIME,
+            RATING,
+            DESCRIPTION,
+            CREATED_AT
+        ) VALUES (
+            SEQ_MOVIE.NEXTVAL,
+            #{title},
+            #{originalTitle},
+            #{director},
+            #{actors},
+            #{genre},
+            #{releaseDate},
+            #{runningTime},
+            #{rating},
+            #{description},
+            SYSDATE
+        )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="com.pknu26.movie_mng.dto.Movie">
+        UPDATE MOVIE SET
+            TITLE           = #{title},
+            ORIGINAL_TITLE  = #{originalTitle},
+            DIRECTOR        = #{director},
+            ACTORS          = #{actors},
+            GENRE           = #{genre},
+            RELEASE_DATE    = #{releaseDate},
+            RUNNING_TIME    = #{runningTime},
+            RATING          = #{rating},
+            DESCRIPTION     = #{description},
+            UPDATED_AT      = SYSDATE
+        WHERE MOVIE_ID = #{movieId}
+    </update>
+
+    <!-- 삭제 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM MOVIE
+        WHERE MOVIE_ID = #{movieId}
+    </delete>
+
+</mapper>

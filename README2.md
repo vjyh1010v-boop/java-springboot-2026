@@ -1032,11 +1032,33 @@ NOCYCLE;
 - controller/UserController 클래스 생성
 - templates/login/join.html 페이지 생성
 
+![alt text](image-32.png)
+
 ## 10일차
 
 ## MyBatis StudyGroup 계속
 
 #### 회원가입/로그인 계속
+
+- templates/user/login.html 페이지 생성
+- controller/UserController 클래스에 로그인 관련 메서드 추가
+
+![alt text](image-33.png)
+
+#### 부트스트랩 템플릿 리스트 (적용)
+
+- [부트스트랩 공식 사이트](https://getbootstrap.com/docs/5.3/examples/) // 부트스트랩 사이트 예제 확인
+  - 부트스트랩 예제 페이지, Download examples 다운로드 후 압축해제
+  - 각 기능별 폴더에서 참조해서 사용
+- [스타트 부트스트랩](https://startbootstrap.com/)
+- [mdbootstrap](https://mdbootstrap.com/freebies/)
+- [bootstrapmade](https://bootstrapmade.com/)
+
+#### 부트스트랩 기능 구현
+
+- Navbar/index.html 소스 참조
+- 태그 복사/붙여넣기
+- 필요기능 추가
 
 #### 스터디모집 웹사이트
 
