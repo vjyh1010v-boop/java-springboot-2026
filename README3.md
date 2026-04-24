@@ -26,16 +26,17 @@
 #### 스터디모집 웹사이트
 
 ```
-├─ config : 회원가입, 로그인 시 암호화
+StudyGroup
+├─ config : 회원가입,로그인시 암호화
 ├─ controller : MVC 패턴 중 Controller 영역
 ├─ dto : MVC 패턴 중 Model에 직접연관(DB 테이블 매핑)
 ├─ mapper : MVC 패턴 중 Model. DB 쿼리 매핑
-├─ service : MVC 패턴 중 Model. 비지니스(도메인) 로직
+├─ service : MVC 패턴 중 Model. 비즈니스(도메인) 로직
 ├─ validation : MVC 패턴 중 View. 화면 입력 검증
-└─ resiyrces : 웹페이지 리소스
+└─ resources : 웹페이지 리소스
     ├─ mapper : MVC 패턴 중 Model. DB 쿼리 위치
-    ├─ static : View에 포함되는 이미지, css, 정적HTML, js 위치
-    └─ templates : MVC 패턴 중 View. 실제 화면을 나타낼 영역
+    ├─ static : View에 포함되는 이미지, CSS, 정적HTML, js 위치
+    └─ templates : MVC 패턴 중 VIew. 실제 화면을 나타낼 영역
 ```
 
 - 카테고리 CRUD
@@ -59,8 +60,6 @@
   - templates/post/list.html, form.html 생성
 
   ![alt text](image-40.png)
-
-  ![alt text](image-41.png)
 
 #### 조회수 증가
 
@@ -91,30 +90,189 @@
   - controller, StudyApplicaitonController 클래스
   - html, post/detail.html 화면 추가
 
-  ![alt text](image-43.png)
+## 14일차
 
-#### 필요이슈
+#### 스터디모집 신청 계속
+
+#### TIP
+
+- Controller는 사용자의 요청을 받아서 Service로 전달한 뒤 받은 결과를 View로 출력하는 기능. 로그인세션 처리
+- Service는 요청에서 Model로 데이터 요청, 돌려받아서 비즈니스로직 처리
+- View는 돌려받은 데이터들을 표현
+
+![alt text](image-44.png)
+
+#### 필요 이슈
 
 - [x] 컨트롤러 post 메서드 파라미터 순서 중요
-  - 입력검증 파라미터 다음에 BindingResult 위치해야 함!
-  - @Valid CommentForm commenntForm, BidingResult bindingResult, ...
-
-- 스터디 신청 문제 - 신청리스트 띄워서 일단 반정도 완료
+  - 입력검증 파라미터 다음에 BingResult가 위치해야 함!
+  - @Valid CommentForm commentForm, BindingResult bindingResult, ...
+- [x] 스터디 신청 문제 - 신청리스트 띄워서 일단 반정도 완료
   - 중복신청 알림 없음
   - 신청 후 메시지 없음
+- [x] 각 입력폼 에러메시지 디자인 통일
+  - 글로벌 에러는 alert 디자인으로
+  - 각 입력별 에러메시지는 단순 빨간색으로
+- [x] 전체 인원이 2명인데 3명 승인 가능
+- [x] 승인한 멤버에 대해서 다시 거절하는 기능
+- [x] 인원이 전부 신청승인되고나면 스터디포스트 자체 상태가 CLOSED 가 되어야 함
+- [x] 마감된 스터디에 신청버튼이 존재
+
+- [x] 스터디포스트 페이징
+  - BoardMapper.xml 참조해서 StudyPostMapper.xml findAll 메서드 변경
+  - StudyPostMapper 인터페이스 위 내용참조해서 추가변경
+  - BoardServiceImpl 클래스 참조해서 StudyPostService 클래스 getPostList 메서드 변경
+  - StudyPostController 클래스 수정
+  - templates/post/list.html 페이징 추가
+- [x] Join, Login.html 버튼 디자인 변경
+
+- [x] 게시판 작성자 입력 불필요
+  - dto.BoardForm @NotBlank 어노테이션 삭제
+- [x] 게시판 댓글 등록 오류메시지 미출력
+  - RedirectAttributes 파라미터 사용
+- [x] 기존 게시판 상세 디자인 StudyPost 상세 형태와 동일하게 변경
+- [x] 로그아웃 후 home으로 이동
+- [x] 전체 푸터 작업
+  - Bootstrap 클래스만으로 가능
+
+![alt text](image-45.png)
+
+## 15일차
+
+### StudyGroup 계속
+
+#### 관리자 홈관리화면
+
+- 컨텐츠 관리
+  - Site_Content 테이블 생성
+  - dto, Site 클래스
+  - validation, SiteForm 클래스
+  - mapper, SiteMapper 인터페이스
+  - templates/mapper, SiteMapper.xml
+  - service, SiteService 클래스
+  - controller, SiteController 클래스
+  - controller, HomeController home 메서드 수정
+
+  ![alt text](image-46.png)
+
+- 이미지 관리
+  - application.properties 에 저장경로 설정!
+  - config, FileProperties 클래스 추가
+
+    ![alt text](image-47.png)
+
+  - config, WebMvcConfig 클래스 추가
+  - Site_Image 테이블 생성
+  - dto, SiteImage 클래스
+  - validation, SiteImageForm 클래스
+  - mapper, SiteImageMapper 인터페이스
+  - resources/mapper, SiteImageMapper.xml
+
+## 16일차
+
+### StudyGroup 계속
+
+#### 관리자 홈관리 중 이미지 처리
+
+- 이미지 관리 계속
+  - service, SiteImageService 클래스
+  - controller, SiteImageController 클래스
+  - controller, HomeController home 메서드 수정
+  - templates/admin/siteImage list.html, form.html 작업
+
+    ![alt text](image-48.png)
+
+#### 홈화면 이미지 표시
+
+- 이미지 표시
+  - mapper, SiteImageMapper findAllActive() 메서드 추가, xml 추가
+  - service, SiteImageService 메서드 변경
+  - home, HomeController home 메서드 로직 변경
+
+#### 추가개발 이슈
+
+- [ ] Features, Gallary 부분 관리자 데이터 처리, 홈화면 이미지
+  - Carousel 기능과 동일하게 구현
+
+  사진 2장
+
+- [ ] Footer 영역, Privacy(개인정보처리방침), Terms(정책) 추가 개발필요
+- [ ] 각 입력태그에 PlaceHolder 추가
+- [ ] 게시판 댓글 작성자 로그인 아이디 바로 표시하게
+- [ ] 게시판 첨부파일 추가
+- [ ] 댓글 삭제 확인창 띄우기
+- [ ] 관리자 사이트컨텐츠 등록화면, 컨텐츠키를 콤보박스로 변경해보기
+- [ ] 관리자 사이트이미지 등록화면, 이미지키를 콤보박스로 변경해보기
+- [ ] 회원가입시 이메일이나 주소등 추가 등록데이터 입력
+- [ ] 로그인 후 비번변경이나 개인정보 수정화면
+
+### Spring Security
+
+#### 개요
+
+- Spring 기반 애플리케이션 인증(Authentication), 권한(Authoriazation)을 담당하는 보안 프레임워크
+  - 인증 : 로그인 기능, 세션처리, CSRF/CORS 보안처리
+  - 권한 : 접근제어, 글쓰기 가능여부
+
+- 기본동작
+  - 요청 -> 필터체인통과
+  - 인증여부 확인
+  - 미 로그인 시 로그인페이지로 이동
+  - 로그인 성공 후 세션에 사용자 정보 저장
+
+##### 진행순서
+
+- 의존성 추가
+- 비밀번호 암호화 PasswordEncoder 등록
+- UserDetailsService 생성
+- SecurityConfig 생성
+- 로그인 페이지 연결
+- 권한별 URL 제한
+- Thymeleaf 로그인/관리자 조건 처리
+
+#### Spring Security 개발
+
+- build.gradle 의존성 추가
+- 실행화면
+
+  ![alt text](image-51.png)
+
+## 17일차
+
+### Spring Security
+
+...
+
+### JMT
+
+#### 개요
+
+- JSON Web Token : 로그인 후에 서버에서 발급하는 토큰 기반의 인증방식
+  - React, Node.js 등의 다른 프론트엔드와 연계하는 풀스택개발시 사용하는 인증방식
+  - 서버에 세션을 저장안함. 토큰으로 인증 대체
+
+#### 남은 이슈
+
+- [x] favicon 추가
+  - 자동인식방법 resources/static/favicon.ico
+  - png to ico 변환필요
+
+  ![alt text](image-49.png)
+
+- [x] 에러페이지 필요 - 디자인만 잘하면 됨
+  - 404 에러 : Page Not Found
+  - 500 에러 : Internel Server Error
 
 - home.html 관리자 관리할 화면 생성
-- home.html 동적바인딩
-- 기존게시판 상세 디자인 StudyPost 상세 형태로 변경
-- 로그아웃 후 home으로 이동
-- 에러페이지 필요
-- [x] Join, Login 페이지 버튼 디자인 변경
-- 스터디포스트 페이징
-- 전체 푸터 작업
-- 파일 업로드
+  - Hero 이미지 : 웹 전체 화면을 채우는 배경이미지
+  - Carousel : 이미지가 일정시간마다 전환, 또는 버튼클릭으로 전환되는 디자인
+  - 현재 화면
+
+  ![alt text](image-50.png)
+  - 파일 업로드
+
 - Spring Security
-- JMT
-- React와 연동
+- JWT
 
 - 미니프로젝트 팀 구성
-- 미니프로젝트 주제 //서비스가 비지니스 로직이다.
+- 미니프로젝트 주제

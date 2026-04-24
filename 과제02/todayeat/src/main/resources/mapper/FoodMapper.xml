@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.todayeat.mapper.FoodMapper">
+
+    <insert id="insertFood" parameterType="FoodDto">
+        INSERT INTO FOOD (
+            ID, 
+            NAME, 
+            CATEGORY, 
+            RATING, 
+            MEMO, 
+            EAT_DATE, 
+            CREATED_AT
+        ) VALUES (
+            FOOD_SEQ.NEXTVAL, 
+            #{name}, 
+            #{category}, 
+            #{rating}, 
+            #{memo}, 
+            #{eatDate}, 
+            SYSDATE
+        )
+    </insert>
+
+    <select id="selectAll" parameterType="string" resultType="FoodDto">
+        SELECT ID
+            , NAME
+            , CATEGORY
+            , RATING
+            , MEMO
+            , EAT_DATE
+            , CREATED_AT
+        FROM FOOD
+        <choose>
+            <when test="orderBy == 'category'">
+                ORDER BY CATEGORY ASC, EAT_DATE DESC
+            </when>
+            <when test="orderBy == 'rating'">
+                ORDER BY RATING DESC, EAT_DATE DESC
+            </when>
+            <otherwise>
+                ORDER BY EAT_DATE DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <delete id="deleteFoods">
+    DELETE FROM FOOD WHERE ID IN
+    <foreach item="id" collection="ids" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+    </delete>
+
+    <update id="updateFood">
+    UPDATE FOOD SET 
+        NAME = #{name}, 
+        CATEGORY = #{category}, 
+        RATING = #{rating}, 
+        MEMO = #{memo}, 
+        EAT_DATE = #{eatDate}
+    WHERE ID = #{id}
+    </update>
+
+</mapper>

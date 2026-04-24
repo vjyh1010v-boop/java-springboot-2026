@@ -1,5 +1,6 @@
 package com.pknu26.todayeat.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.Data;
@@ -12,7 +13,7 @@ public class FoodDto {
     private String category;
     private Integer rating;
     private String memo;
-    private LocalDateTime eatDate;
+    private LocalDate eatDate;
     private LocalDateTime createdAt;
 
 }

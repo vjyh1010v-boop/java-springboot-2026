@@ -332,7 +332,7 @@
 
 - DELETE 메서드 처리 어노테이션
 - `@DeleteMapping`
-- 거의 사용되지 않
+- 거의 사용되지 않음
 - 데이터 삭제시 사용하는 Mapping
 - Post로 가능.
 
@@ -1149,7 +1149,7 @@ NOCYCLE;
   ></html>
   ```
 
-![alt text](image-38.png)
+  ![alt text](image-38.png)
 
 #### 관리자 기능
 
