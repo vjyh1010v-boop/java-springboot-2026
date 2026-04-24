@@ -189,6 +189,8 @@ StudyGroup
   - service, SiteImageService 메서드 변경
   - home, HomeController home 메서드 로직 변경
 
+https://github.com/user-attachments/assets/8356fd96-a681-4aad-9f82-7c1f158f8c92
+
 #### 추가개발 이슈
 
 - [ ] Features, Gallary 부분 관리자 데이터 처리, 홈화면 이미지
