@@ -193,16 +193,19 @@ https://github.com/user-attachments/assets/8356fd96-a681-4aad-9f82-7c1f158f8c92
 
 #### 추가개발 이슈
 
-- [ ] Features, Gallary 부분 관리자 데이터 처리, 홈화면 이미지
-  - Carousel 기능과 동일하게 구현
-
-  사진 2장
-
+- [ ] 댓글 삭제 확인창 띄우기
 - [ ] Footer 영역, Privacy(개인정보처리방침), Terms(정책) 추가 개발필요
 - [ ] 각 입력태그에 PlaceHolder 추가
 - [ ] 게시판 댓글 작성자 로그인 아이디 바로 표시하게
+
+- [ ] Features, Gallary 부분 관리자 데이터 처리, 홈화면 이미지 표시
+  - Carousel 기능과 동일하게 구현
+
+  ![alt text](image-53.png)
+
+  ![alt text](image-54.png)
+
 - [ ] 게시판 첨부파일 추가
-- [ ] 댓글 삭제 확인창 띄우기
 - [ ] 관리자 사이트컨텐츠 등록화면, 컨텐츠키를 콤보박스로 변경해보기
 - [ ] 관리자 사이트이미지 등록화면, 이미지키를 콤보박스로 변경해보기
 - [ ] 회원가입시 이메일이나 주소등 추가 등록데이터 입력
@@ -226,11 +229,26 @@ https://github.com/user-attachments/assets/8356fd96-a681-4aad-9f82-7c1f158f8c92
 
 - 의존성 추가
 - 비밀번호 암호화 PasswordEncoder 등록
+- CustomUserDetails 생성
 - UserDetailsService 생성
 - SecurityConfig 생성
-- 로그인 페이지 연결
-- 권한별 URL 제한
+- 기존 UserController 수정
+- 로그인 페이지 수정
+- layout.html SpringSecurity Thymeleaf 추가 (권한별 URL 제한)
+  - session.loginUser 제거
+  - sec:authorize 속성으로 변경
 - Thymeleaf 로그인/관리자 조건 처리
+
+  ```html
+  <!-- 제거 -->
+  <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+  </div>
+  ```
+
+- Controller에서 HttpSession 파라미터 제거
+  - @AuthenticationPrincipal CustomUserDetails loginUser 로 변경
+  - 코드 상 LoginUser... 부분 주석처리
 
 #### Spring Security 개발
 
@@ -243,7 +261,21 @@ https://github.com/user-attachments/assets/8356fd96-a681-4aad-9f82-7c1f158f8c92
 
 ### Spring Security
 
-...
+#### build.grdle 적용
+
+- 서버 실행
+
+```powershell
+2026-04-27T09:19:25.213+09:00  WARN 22812 --- [studygroup] [  restartedMain] .s.a.UserDetailsServiceAutoConfiguration :
+# User 임시 패스워드
+Using generated security password: c7640c0c-4f62-4af9-87bf-60771b86d173
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+```
+
+- Spring Security Crpto 라이브러리 -> 제거
+
+  ![alt text](image-52.png)
 
 ### JMT
 
@@ -252,6 +284,23 @@ https://github.com/user-attachments/assets/8356fd96-a681-4aad-9f82-7c1f158f8c92
 - JSON Web Token : 로그인 후에 서버에서 발급하는 토큰 기반의 인증방식
   - React, Node.js 등의 다른 프론트엔드와 연계하는 풀스택개발시 사용하는 인증방식
   - 서버에 세션을 저장안함. 토큰으로 인증 대체
+
+#### JWT 반영 순서
+
+- 로그인 > JWT 발급 > 요청 시 JWT 검증 > 인증처리
+
+#### 진행순서
+
+- build.gradle
+- application.properties JWT 설정 추가
+- config, JwtProvider 클래스 생성
+
+- dto/api, API 요청/응답용 dto 생성
+- security, JwtAuthenticationFilter 클래스 생성
+- controller, ApiAuthController 클래스 생성
+- config, SecurityConfig 수정
+
+- 테스트 콘트롤러
 
 #### 남은 이슈
 
@@ -273,8 +322,7 @@ https://github.com/user-attachments/assets/8356fd96-a681-4aad-9f82-7c1f158f8c92
   ![alt text](image-50.png)
   - 파일 업로드
 
-- Spring Security
-- JWT
+- [x] 세군데 있던 checkAdmin 메서드 정리. AdminHelper 클래스 생성
 
 - 미니프로젝트 팀 구성
 - 미니프로젝트 주제
